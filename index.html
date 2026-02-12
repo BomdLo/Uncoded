@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Uncoded</title>
+    <style>
+        body { background: #000; color: #fff; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; font-family: monospace; }
+        #timer { font-size: clamp(2rem, 8vw, 4rem); color: #ff3e3e; text-shadow: 0 0 15px #ff3e3e; letter-spacing: 5px; }
+        .hint { position: absolute; bottom: 30px; color: #333; letter-spacing: 5px; font-size: 0.8rem; }
+    </style>
+</head>
+<body>
+    <div id="timer">07:00:00:00</div>
+    <div class="hint">PROJECT_AWAKENING_IN_PROGRESS</div>
+
+    <script>
+        const targetDate = new Date("2026-02-15T20:00:00").getTime();
+        function update() {
+            const now = new Date().getTime();
+            const diff = targetDate - now;
+            if (diff <= 0) {
+                document.getElementById('timer').innerText = "00:00:00:00";
+                return;
+            }
+            const d = Math.floor(diff / (1000 * 60 * 60 * 24)).toString().padStart(2, '0');
+            const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)).toString().padStart(2, '0');
+            const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60)).toString().padStart(2, '0');
+            const s = Math.floor((diff % (1000 * 60)) / 1000).toString().padStart(2, '0');
+            document.getElementById('timer').innerText = `${d}:${h}:${m}:${s}`;
+        }
+        setInterval(update, 1000);
+        update();
+    </script>
+</body>
+</html>
