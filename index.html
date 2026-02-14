@@ -3,11 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Uncoded</title>
+    <title>Uncoded | LOCKED</title>
     <style>
         :root {
             --bg-color: #000000;
             --accent-color: #ff3e3e;
+            --dim-color: #333;
         }
 
         body, html {
@@ -17,72 +18,96 @@
             height: 100%;
             background-color: var(--bg-color);
             color: #ffffff;
-            font-family: monospace;
+            font-family: 'Courier New', monospace;
             display: flex;
             justify-content: center;
             align-items: center;
             overflow: hidden;
         }
 
-        /* 這裡的佈局邏輯與第二版完全一致，確保切換時位置不動 */
         #countdown-container {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
             text-align: center;
             width: 100%;
         }
 
         #timer {
-            font-size: clamp(2rem, 8vw, 4rem);
+            font-size: clamp(1.5rem, 6vw, 3rem);
             font-weight: 700;
-            letter-spacing: 5px;
+            letter-spacing: 2px;
             color: var(--accent-color);
             text-shadow: 0 0 15px var(--accent-color);
-            margin: 0;
-            line-height: 1;
+            margin-bottom: 10px;
+        }
+
+        /* 偽進度條 */
+        .progress-bar-container {
+            width: 280px;
+            height: 4px;
+            background: #111;
+            margin: 20px auto;
+            position: relative;
+            border-radius: 2px;
+        }
+
+        .progress-fill {
+            width: 32.5%; /* 這裡手動調整目前的同步率百分比 */
+            height: 100%;
+            background: var(--accent-color);
+            box-shadow: 0 0 10px var(--accent-color);
+            transition: width 2s ease-in-out;
         }
 
         .hint {
-            color: #333;
-            letter-spacing: 5px;
-            font-size: 0.8rem;
+            color: var(--dim-color);
+            letter-spacing: 3px;
+            font-size: 0.7rem;
             text-transform: uppercase;
-            margin-top: 20px; /* 與第二版的間距對齊 */
+        }
+
+        #sync-data {
+            font-size: 0.8rem;
+            color: #666;
+            margin-top: 10px;
         }
     </style>
 </head>
 <body>
 
     <div id="countdown-container">
-        <div id="timer">00:00:00:00</div>
-        <div class="hint">PROJECT_AWAKENING_IN_PROGRESS</div>
+        <div id="timer">SYSTEM_LOCKED</div>
+        <div class="progress-bar-container">
+            <div class="progress-fill"></div>
+        </div>
+        <div id="sync-data">SYNC_RATIO: 32.5%</div>
+        <div class="hint">WAITING_FOR_OBSERVER_DENSITY</div>
     </div>
 
     <script>
-        // 目標時間：2026年2月15日 晚上8點
-        const targetDate = new Date("2026-02-15T20:00:00").getTime();
+        // 核心邏輯：攔截協議
+        const config = {
+            isLocked: true,
+            syncRatio: 32.5, // 你可以隨時回來改這個數字
+            statusMessage: "ACCESS_DENIED: INSUFFICIENT_OBSERVERS"
+        };
 
-        function update() {
-            const now = new Date().getTime();
-            const diff = targetDate - now;
-            
-            if (diff <= 0) {
-                document.getElementById('timer').innerText = "00:00:00:00";
-                return;
+        function init() {
+            if (config.isLocked) {
+                console.warn(config.statusMessage);
+                // 這裡我們不再跑 targetDate 的邏輯
+                document.getElementById('timer').innerText = "CONNECTION_SUSPENDED";
             }
-
-            const d = Math.floor(diff / (1000 * 60 * 60 * 24)).toString().padStart(2, '0');
-            const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)).toString().padStart(2, '0');
-            const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60)).toString().padStart(2, '0');
-            const s = Math.floor((diff % (1000 * 60)) / 1000).toString().padStart(2, '0');
-            
-            document.getElementById('timer').innerText = `${d}:${h}:${m}:${s}`;
         }
 
-        setInterval(update, 1000);
-        update();
+        // 模擬系統雜訊，讓畫面看起來還在跑，但時間不動
+        setInterval(() => {
+            const timer = document.getElementById('timer');
+            if (Math.random() > 0.95) {
+                timer.style.opacity = "0.5";
+                setTimeout(() => timer.style.opacity = "1", 50);
+            }
+        }, 100);
+
+        init();
     </script>
 </body>
 </html>
